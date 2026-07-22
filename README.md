@@ -187,7 +187,8 @@ the release zip. Full steps: [docs/DISTRIBUTION.md](docs/DISTRIBUTION.md).
 ## Localization
 
 The interface is localized into English, French, Polish, German, Spanish, Portuguese, Italian,
-Ukrainian, Simplified Chinese, and Japanese. macOS picks the language from your system settings.
+Ukrainian, Simplified Chinese, Japanese, and Korean. macOS picks the language from your system
+settings.
 Strings live in `Localizations/<lang>.lproj/Localizable.strings` (English is the source); `build.sh`
 copies them into the app bundle. Add a language by copying `en.lproj` and translating the values.
 The non-English translations are an initial best-effort pass and welcome native review.
