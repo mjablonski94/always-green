@@ -175,7 +175,7 @@ Conventions, the DI pattern, and how to add a new dependency are in
 The Mac App Store sandbox blocks the synthetic input this app relies on, so it ships as a direct
 download. A build must be **Developer ID signed and notarized** or macOS will block it (see
 [Troubleshooting](#troubleshooting)). `./dist.sh` performs sign -> notarize -> staple and produces
-the release zip. Full steps: [docs/DISTRIBUTION.md](docs/DISTRIBUTION.md).
+the notarized `AlwaysGreen-1.0.dmg`. Full steps: [docs/DISTRIBUTION.md](docs/DISTRIBUTION.md).
 
 ## Troubleshooting
 
