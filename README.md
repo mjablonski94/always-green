@@ -59,6 +59,13 @@ minutes or set to Never, it uses a safe 30-second default. See
 
 ## Install
 
+### Download (DMG)
+
+Grab `AlwaysGreen-1.0.dmg` from the [Releases](https://github.com/mjablonski94/auto-green/releases)
+page, open it, and drag **Always Green** into the Applications folder (the DMG also carries the
+`alwaysgreen` CLI). This needs a notarized build - see [Distribution](#distribution) - otherwise
+macOS blocks it on first open.
+
 ### Homebrew (once a notarized release is published)
 
 ```sh

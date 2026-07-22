@@ -2,7 +2,7 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-# Developer ID signing + notarization for direct distribution.
+# Developer ID signing + notarization for direct distribution (produces a DMG).
 # Prerequisites (Apple Developer Program):
 #   export DEVELOPER_ID="Developer ID Application: Your Name (TEAMID)"
 #   export NOTARY_PROFILE="a-notarytool-keychain-profile"   # xcrun notarytool store-credentials
@@ -10,26 +10,26 @@ cd "$(dirname "$0")"
 : "${NOTARY_PROFILE:?set NOTARY_PROFILE}"
 
 APP="Always Green.app"
-ZIP="AlwaysGreen.zip"
-STAGE="dist"
+VERSION="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' Info.plist)"
+DMG="AlwaysGreen-$VERSION.dmg"
 
 ./build.sh release
 
-# Sign the app (signing the bundle signs its main executable) and the standalone CLI.
-codesign --force --options runtime --timestamp --sign "$DEVELOPER_ID" "$APP"
+# Sign the app and the standalone CLI with Developer ID (hardened runtime).
 codesign --force --options runtime --timestamp --sign "$DEVELOPER_ID" "alwaysgreen"
+codesign --force --options runtime --timestamp --sign "$DEVELOPER_ID" "$APP"
 codesign --verify --strict --verbose=2 "$APP"
 
-# Notarize the app, then staple.
-ditto -c -k --keepParent "$APP" "notarize.zip"
-xcrun notarytool submit "notarize.zip" --keychain-profile "$NOTARY_PROFILE" --wait
+# Notarize and staple the app first, so it validates offline once copied out of the DMG.
+ditto -c -k --keepParent "$APP" "notarize-app.zip"
+xcrun notarytool submit "notarize-app.zip" --keychain-profile "$NOTARY_PROFILE" --wait
 xcrun stapler staple "$APP"
-rm -f "notarize.zip"
+rm -f "notarize-app.zip"
 
-# Release artifact for the Homebrew cask: stapled app + CLI at the archive root.
-rm -rf "$STAGE"; mkdir -p "$STAGE"
-cp -R "$APP" "$STAGE/"
-cp "alwaysgreen" "$STAGE/"
-ditto -c -k "$STAGE" "$ZIP"
+# Build the DMG from the stapled app, then sign + notarize + staple the DMG itself.
+./make-dmg.sh
+codesign --force --sign "$DEVELOPER_ID" "$DMG"
+xcrun notarytool submit "$DMG" --keychain-profile "$NOTARY_PROFILE" --wait
+xcrun stapler staple "$DMG"
 
-echo "Signed, notarized, stapled. Release artifact: $ZIP (app + alwaysgreen CLI)"
+echo "Signed, notarized, stapled. Release artifact: $DMG"

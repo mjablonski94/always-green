@@ -43,14 +43,17 @@ export NOTARY_PROFILE="AlwaysGreenNotary"
 1. Builds a release via `build.sh`.
 2. Signs the app and the standalone `alwaysgreen` CLI with the Developer ID (hardened runtime).
 3. Notarizes the app and staples the ticket.
-4. Produces `AlwaysGreen.zip` containing the stapled `Always Green.app` and `alwaysgreen` at the
-   archive root - the artifact the Homebrew cask expects.
+4. Builds a drag-to-install DMG via `make-dmg.sh` (the app, the `alwaysgreen` CLI, and an
+   `/Applications` shortcut), then signs, notarizes, and staples the DMG - producing
+   `AlwaysGreen-<version>.dmg`, the artifact the download link and the Homebrew cask both use.
+
+To build just the DMG locally (unsigned, for a quick look): `./make-dmg.sh`.
 
 Verify:
 
 ```sh
-spctl -a -vvv "Always Green.app"      # should read: accepted, source=Notarized Developer ID
-xcrun stapler validate "Always Green.app"
+spctl -a -vvv "Always Green.app"                 # accepted, source=Notarized Developer ID
+xcrun stapler validate "AlwaysGreen-1.0.dmg"
 ```
 
 ## Local development signing
@@ -64,9 +67,9 @@ Accessibility after each ad-hoc rebuild.
 
 The cask is `homebrew/always-green.rb`. To let users `brew install --cask always-green`:
 
-1. Cut a GitHub release on `mjablonski94/auto-green` and upload `AlwaysGreen.zip` as
-   `AlwaysGreen-<version>.zip`.
-2. Compute the digest: `shasum -a 256 AlwaysGreen-<version>.zip`.
+1. Cut a GitHub release on `mjablonski94/auto-green` and upload the `AlwaysGreen-<version>.dmg`
+   that `dist.sh` produced.
+2. Compute the digest: `shasum -a 256 AlwaysGreen-<version>.dmg`.
 3. Create a repository named `homebrew-tap` under your account, add the cask under `Casks/`, and
    set `version`, `url`, and the real `sha256` (replace `:no_check`).
 4. Users then run:
@@ -87,8 +90,7 @@ brew install --cask ./homebrew/always-green.rb
 ## Release checklist
 
 - [ ] Bump `CFBundleShortVersionString`/`CFBundleVersion` in `Info.plist` and `version` in the cask.
-- [ ] Set the real Buy-Me-a-Coffee handle in `Sources/AlwaysGreenApp/SystemActions.swift`.
 - [ ] `./coverage.sh` passes.
-- [ ] `./dist.sh` produces a notarized, stapled `AlwaysGreen.zip`.
-- [ ] `spctl` reports "Notarized Developer ID".
+- [ ] `./dist.sh` produces a notarized, stapled `AlwaysGreen-<version>.dmg`.
+- [ ] `spctl` reports "Notarized Developer ID"; `xcrun stapler validate` passes on the DMG.
 - [ ] GitHub release uploaded; cask `url`/`sha256` updated.
