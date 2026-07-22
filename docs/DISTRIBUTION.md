@@ -67,7 +67,7 @@ Accessibility after each ad-hoc rebuild.
 
 The cask is `homebrew/always-green.rb`. To let users `brew install --cask always-green`:
 
-1. Cut a GitHub release on `mjablonski94/auto-green` and upload the `AlwaysGreen-<version>.dmg`
+1. Cut a GitHub release on `mjablonski94/always-green` and upload the `AlwaysGreen-<version>.dmg`
    that `dist.sh` produced.
 2. Compute the digest: `shasum -a 256 AlwaysGreen-<version>.dmg`.
 3. Create a repository named `homebrew-tap` under your account, add the cask under `Casks/`, and

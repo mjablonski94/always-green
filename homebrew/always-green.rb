@@ -4,10 +4,10 @@ cask "always-green" do
   #   shasum -a 256 AlwaysGreen-1.0.dmg
   sha256 :no_check
 
-  url "https://github.com/mjablonski94/auto-green/releases/download/v#{version}/AlwaysGreen-#{version}.dmg"
+  url "https://github.com/mjablonski94/always-green/releases/download/v#{version}/AlwaysGreen-#{version}.dmg"
   name "Always Green"
   desc "Keeps your Mac active and your chat status green"
-  homepage "https://github.com/mjablonski94/auto-green"
+  homepage "https://github.com/mjablonski94/always-green"
 
   depends_on macos: ">= :sonoma"
 

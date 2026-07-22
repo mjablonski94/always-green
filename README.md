@@ -5,7 +5,7 @@ A tiny macOS menu-bar app that keeps your Mac active and your chat presence "ava
 cursor movement on an interval derived from your screen-sleep setting. It ships with a matching
 `alwaysgreen` command-line tool that controls the same app.
 
-- Repository: https://github.com/mjablonski94/auto-green
+- Repository: https://github.com/mjablonski94/always-green
 - Platform: macOS 14 (Sonoma) and later
 - Language: Swift 6 (SwiftUI + AppKit)
 
@@ -61,7 +61,7 @@ minutes or set to Never, it uses a safe 30-second default. See
 
 ### Download (DMG)
 
-Grab `AlwaysGreen-1.0.dmg` from the [Releases](https://github.com/mjablonski94/auto-green/releases)
+Grab `AlwaysGreen-1.0.dmg` from the [Releases](https://github.com/mjablonski94/always-green/releases)
 page, open it, and drag **Always Green** into the Applications folder (the DMG also carries the
 `alwaysgreen` CLI). This needs a notarized build - see [Distribution](#distribution) - otherwise
 macOS blocks it on first open.
@@ -79,8 +79,8 @@ See [docs/DISTRIBUTION.md](docs/DISTRIBUTION.md) for publishing the tap.
 ### From source
 
 ```sh
-git clone git@github.com:mjablonski94/auto-green.git
-cd auto-green
+git clone git@github.com:mjablonski94/always-green.git
+cd always-green
 ./build.sh
 open "Always Green.app"
 ```
@@ -131,7 +131,7 @@ If you prefer the short command, add this to `~/.zshrc` (it delegates to the app
 
 ```zsh
 green() {
-  local cli; cli="$(command -v alwaysgreen 2>/dev/null)"; [[ -z $cli ]] && cli="$HOME/repo/auto-green/alwaysgreen"
+  local cli; cli="$(command -v alwaysgreen 2>/dev/null)"; [[ -z $cli ]] && cli="$HOME/repo/always-green/alwaysgreen"
   "$cli" "${1:-status}"
 }
 ```
