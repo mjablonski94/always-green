@@ -236,9 +236,11 @@ final class IntervalPolicyTests: XCTestCase {
         XCTAssertEqual(IntervalPolicy.derive(displaySleepSeconds: nil), 30)
         XCTAssertEqual(IntervalPolicy.derive(displaySleepSeconds: 0), 30)
         XCTAssertEqual(IntervalPolicy.derive(displaySleepSeconds: 120), 60)
-        XCTAssertEqual(IntervalPolicy.derive(displaySleepSeconds: 600), 240)
         XCTAssertEqual(IntervalPolicy.derive(displaySleepSeconds: 20), 15)
         XCTAssertEqual(IntervalPolicy.derive(displaySleepSeconds: 60), 30)
+        XCTAssertEqual(IntervalPolicy.derive(displaySleepSeconds: 300), 150)  // exactly 5 min -> half
+        XCTAssertEqual(IntervalPolicy.derive(displaySleepSeconds: 301), 30)   // over 5 min -> fallback
+        XCTAssertEqual(IntervalPolicy.derive(displaySleepSeconds: 600), 30)   // long -> fallback
     }
 }
 

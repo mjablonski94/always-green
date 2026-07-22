@@ -21,7 +21,7 @@ struct AboutView: View {
                     section("What it does",
                             "Always Green makes a tiny cursor movement at the interval you choose so your Mac stays active and your chat status stays \"available\". It does not click, type, record, or read anything you do.")
                     section("Interval",
-                            "The interval defaults to half of your system screen-sleep time (so a nudge always lands before the screen would sleep). You can override it; it is capped to stay under the usual idle threshold.")
+                            "The interval defaults to half of your system screen-sleep time, so a nudge always lands before the screen would sleep. If your screen-sleep is longer than five minutes (or off), it uses a safe 30-second default instead. You can override it.")
                     section("Data and privacy",
                             "Always Green collects no personal data and makes no network connections. It has no analytics or tracking. Your settings are stored only on this Mac. The \u{201C}Buy me a coffee\u{201D} button opens a link in your browser; that page belongs to a third party with its own terms.")
                     section("Permissions",
