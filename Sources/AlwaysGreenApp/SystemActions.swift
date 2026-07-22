@@ -1,7 +1,7 @@
 import AppKit
 
 enum SystemActions {
-    static let buyMeACoffeeURL = URL(string: "https://buymeacoffee.com/YOUR_HANDLE")!
+    static let buyMeACoffeeURL = URL(string: "https://buymeacoffee.com/kofcio94f")!
 
     static func openBuyMeACoffee() {
         NSWorkspace.shared.open(buyMeACoffeeURL)
