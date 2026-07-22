@@ -1,0 +1,6 @@
+.build/
+*.app
+/alwaysgreen
+AppIcon.iconset/
+*.zip
+.DS_Store
