@@ -58,15 +58,23 @@ struct MenuContentView: View {
                 step: 5
             ) {
                 HStack {
-                    Text("Move every")
+                    Text("Green check interval")
                     Spacer()
                     Text(engine.intervalLabel).monospacedDigit().foregroundStyle(.secondary)
                 }
             }
 
-            Text(engine.autoInterval ? "Auto (half your screen-sleep time)" : "Manual")
-                .font(.caption)
-                .foregroundStyle(.secondary)
+            HStack {
+                Text(engine.autoInterval ? "Auto (half your screen-sleep time)" : "Manual")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                Spacer()
+                if !engine.autoInterval {
+                    Button("Reset to auto") { engine.resetIntervalToAuto() }
+                        .font(.caption)
+                        .buttonStyle(.borderless)
+                }
+            }
 
             Toggle("Launch at login (start with system)", isOn: Binding(
                 get: { engine.launchAtLogin },

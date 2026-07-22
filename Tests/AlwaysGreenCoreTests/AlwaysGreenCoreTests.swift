@@ -193,6 +193,16 @@ final class JiggleEngineTests: XCTestCase {
         XCTAssertEqual(engine.intervalSeconds, 150)
     }
 
+    func testResetIntervalToAuto() {
+        let (engine, _, _, _, _, displaySleep) = makeEngine(displaySleep: 120)
+        engine.setIntervalManually(45)
+        XCTAssertFalse(engine.autoInterval)
+        displaySleep.seconds = 200
+        engine.resetIntervalToAuto()
+        XCTAssertTrue(engine.autoInterval)
+        XCTAssertEqual(engine.intervalSeconds, 100)
+    }
+
     func testChangingIntervalWhileRunningRestartsTimer() {
         let (engine, _, timer, _, _, _) = makeEngine(displaySleep: 120)
         engine.start()

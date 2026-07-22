@@ -90,6 +90,12 @@ public final class JiggleEngine: ObservableObject {
         applyInterval(IntervalPolicy.derive(displaySleepSeconds: displaySleep.displaySleepSeconds()))
     }
 
+    /// Return to auto-derivation and recompute the interval from the current screen-sleep.
+    public func resetIntervalToAuto() {
+        autoInterval = true
+        applyInterval(IntervalPolicy.derive(displaySleepSeconds: displaySleep.displaySleepSeconds()))
+    }
+
     private func applyInterval(_ seconds: Int) {
         guard seconds != intervalSeconds else { return }
         intervalSeconds = seconds
