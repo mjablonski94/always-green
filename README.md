@@ -201,5 +201,4 @@ or tracking. Settings are stored locally. Accessibility is used only to move the
 
 ## License
 
-No license file is included yet - add one (for example MIT) before publishing binaries or
-accepting contributions.
+Released under the MIT License - see [LICENSE](LICENSE).
