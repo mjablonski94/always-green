@@ -54,7 +54,16 @@ enum CLI {
     }
 
     static func isAppRunning() -> Bool {
-        !NSRunningApplication.runningApplications(withBundleIdentifier: Config.bundleIdentifier).isEmpty
+        // pgrep sees the actual process regardless of code-signing / LaunchServices state.
+        // NSRunningApplication(withBundleIdentifier:) misses an ad-hoc-signed agent app.
+        let process = Process()
+        process.executableURL = URL(fileURLWithPath: "/usr/bin/pgrep")
+        process.arguments = ["-x", "AlwaysGreenApp"]
+        process.standardOutput = Pipe()
+        process.standardError = Pipe()
+        guard (try? process.run()) != nil else { return false }
+        process.waitUntilExit()
+        return process.terminationStatus == 0
     }
 
     static func post(_ command: Command) {
