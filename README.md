@@ -184,6 +184,14 @@ the release zip. Full steps: [docs/DISTRIBUTION.md](docs/DISTRIBUTION.md).
 - **Interval seems wrong.** It is half your *current* power source's screen-sleep (battery vs AC
   differ), capped under 5 minutes; a long/Never screen-sleep uses 30s. Use the stepper to override.
 
+## Localization
+
+The interface is localized into English, French, Polish, German, Spanish, Portuguese, Italian,
+Ukrainian, Simplified Chinese, and Japanese. macOS picks the language from your system settings.
+Strings live in `Localizations/<lang>.lproj/Localizable.strings` (English is the source); `build.sh`
+copies them into the app bundle. Add a language by copying `en.lproj` and translating the values.
+The non-English translations are an initial best-effort pass and welcome native review.
+
 ## Privacy
 
 Always Green collects no personal data, makes no network connections, and contains no analytics

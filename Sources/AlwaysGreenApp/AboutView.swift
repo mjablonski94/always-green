@@ -7,7 +7,7 @@ struct AboutView: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Button { onBack() } label: {
-                    Label("Back", systemImage: "chevron.left")
+                    Label(Loc.back, systemImage: "chevron.left")
                 }
                 .buttonStyle(.borderless)
                 Spacer()
@@ -18,20 +18,13 @@ struct AboutView: View {
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 12) {
-                    section("What it does",
-                            "Always Green makes a tiny cursor movement at the interval you choose so your Mac stays active and your chat status stays \"available\". It does not click, type, record, or read anything you do.")
-                    section("Interval",
-                            "The interval defaults to half of your system screen-sleep time, so a nudge always lands before the screen would sleep. If your screen-sleep is longer than five minutes (or off), it uses a safe 30-second default instead. You can override it.")
-                    section("Data and privacy",
-                            "Always Green collects no personal data and makes no network connections. It has no analytics or tracking. Your settings are stored only on this Mac. The \u{201C}Buy me a coffee\u{201D} button opens a link in your browser; that page belongs to a third party with its own terms.")
-                    section("Permissions",
-                            "Accessibility access is required by macOS so Always Green may move the cursor. You grant it once in System Settings and can revoke it at any time. Always Green never forces the Mac awake with a power assertion.")
-                    section("Command line",
-                            "The bundled \u{2018}alwaysgreen\u{2019} tool controls this same app from the terminal (start, stop, toggle, status).")
-                    section("Your responsibility",
-                            "You are responsible for using Always Green in line with your employer\u{2019}s and any applicable rules. Simulating activity may be restricted in some workplaces.")
-                    section("Warranty",
-                            "Always Green is provided \u{201C}as is\u{201D}, without warranty of any kind. Use at your own risk.")
+                    section(Loc.aboutWhatTitle, Loc.aboutWhatBody)
+                    section(Loc.aboutIntervalTitle, Loc.aboutIntervalBody)
+                    section(Loc.aboutPrivacyTitle, Loc.aboutPrivacyBody)
+                    section(Loc.aboutPermissionsTitle, Loc.aboutPermissionsBody)
+                    section(Loc.aboutCliTitle, Loc.aboutCliBody)
+                    section(Loc.aboutResponsibilityTitle, Loc.aboutResponsibilityBody)
+                    section(Loc.aboutWarrantyTitle, Loc.aboutWarrantyBody)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             }

@@ -14,7 +14,7 @@ struct MenuContentView: View {
             }
         }
         .padding(14)
-        .frame(width: 272)
+        .frame(width: 300)
         .onAppear { engine.refreshAccessibility() }
     }
 
@@ -25,7 +25,7 @@ struct MenuContentView: View {
                 .frame(width: 10, height: 10)
             Text("Always Green").font(.headline)
             Spacer()
-            Text(engine.isRunning ? "On" : "Off").foregroundStyle(.secondary)
+            Text(engine.isRunning ? Loc.statusOn : Loc.statusOff).foregroundStyle(.secondary)
         }
     }
 
@@ -36,7 +36,7 @@ struct MenuContentView: View {
             Button {
                 engine.toggle()
             } label: {
-                Text(engine.isRunning ? "Stop" : "Start").frame(maxWidth: .infinity)
+                Text(engine.isRunning ? Loc.stop : Loc.start).frame(maxWidth: .infinity)
             }
             .controlSize(.large)
             .buttonStyle(.borderedProminent)
@@ -58,25 +58,25 @@ struct MenuContentView: View {
                 step: 5
             ) {
                 HStack {
-                    Text("Green check interval")
+                    Text(Loc.intervalTitle)
                     Spacer()
                     Text(engine.intervalLabel).monospacedDigit().foregroundStyle(.secondary)
                 }
             }
 
             HStack {
-                Text(engine.autoInterval ? "Auto (half your screen-sleep time)" : "Manual")
+                Text(engine.autoInterval ? Loc.intervalAuto : Loc.intervalManual)
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 Spacer()
                 if !engine.autoInterval {
-                    Button("Reset to auto") { engine.resetIntervalToAuto() }
+                    Button(Loc.resetToAuto) { engine.resetIntervalToAuto() }
                         .font(.caption)
                         .buttonStyle(.borderless)
                 }
             }
 
-            Toggle("Launch at login (start with system)", isOn: Binding(
+            Toggle(Loc.launchAtLogin, isOn: Binding(
                 get: { engine.launchAtLogin },
                 set: { engine.setLaunchAtLogin($0) }
             ))
@@ -86,7 +86,7 @@ struct MenuContentView: View {
             Button {
                 SystemActions.openBuyMeACoffee()
             } label: {
-                Label("Buy me a coffee", systemImage: "cup.and.saucer.fill")
+                Label(Loc.buyCoffee, systemImage: "cup.and.saucer.fill")
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             .buttonStyle(.borderless)
@@ -95,31 +95,39 @@ struct MenuContentView: View {
                 Button {
                     showingInfo = true
                 } label: {
-                    Label("Info", systemImage: "info.circle")
+                    Label(Loc.info, systemImage: "info.circle")
                 }
                 .buttonStyle(.borderless)
                 Spacer()
-                Button("Quit") { NSApplication.shared.terminate(nil) }
+                Button(Loc.quit) { NSApplication.shared.terminate(nil) }
                     .buttonStyle(.borderless)
             }
         }
     }
 
     private var accessibilityNotice: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Label("Accessibility access needed", systemImage: "hand.raised.fill")
+        VStack(alignment: .leading, spacing: 8) {
+            Label(Loc.accessTitle, systemImage: "hand.raised.fill")
                 .font(.callout).bold()
                 .foregroundStyle(.orange)
-            Text("Click Grant access, enable \"Always Green\" in the list that opens, then click Re-check. Start stays disabled until then.")
+            Text(Loc.accessBody)
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
+            Button {
+                engine.requestAccess()
+            } label: {
+                Text(Loc.grantAccess).frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(.orange)
             HStack {
-                Button("Grant access") { engine.requestAccess() }
-                Button("Open Settings") { SystemActions.openAccessibilitySettings() }
-                Button("Re-check") { engine.refreshAccessibility() }
+                Button(Loc.openSettings) { SystemActions.openAccessibilitySettings() }
+                Spacer()
+                Button(Loc.recheck) { engine.refreshAccessibility() }
             }
             .controlSize(.small)
+            .buttonStyle(.borderless)
         }
         .padding(10)
         .frame(maxWidth: .infinity, alignment: .leading)

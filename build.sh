@@ -16,6 +16,7 @@ mkdir -p "$CONTENTS/MacOS" "$CONTENTS/Resources"
 cp "$BIN/AlwaysGreenApp" "$CONTENTS/MacOS/AlwaysGreenApp"
 cp Info.plist "$CONTENTS/Info.plist"
 [ -f AppIcon.icns ] && cp AppIcon.icns "$CONTENTS/Resources/AppIcon.icns"
+[ -d Localizations ] && cp -R Localizations/*.lproj "$CONTENTS/Resources/" 2>/dev/null || true
 cp "$BIN/alwaysgreen" "./alwaysgreen"
 
 # Ad-hoc sign by default: launches without a provisioning profile. An Apple Development cert
