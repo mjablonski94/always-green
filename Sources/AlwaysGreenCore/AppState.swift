@@ -4,10 +4,12 @@ import Foundation
 public struct AppState: Codable, Equatable, Sendable {
     public var running: Bool
     public var intervalSeconds: Int
+    public var accessibilityTrusted: Bool
 
-    public init(running: Bool, intervalSeconds: Int) {
+    public init(running: Bool, intervalSeconds: Int, accessibilityTrusted: Bool) {
         self.running = running
         self.intervalSeconds = intervalSeconds
+        self.accessibilityTrusted = accessibilityTrusted
     }
 }
 

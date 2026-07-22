@@ -32,7 +32,8 @@ enum CLI {
         let running = isAppRunning()
         if let state = AppStateStore(url: Config.stateFileURL).load() {
             let onOff = (running && state.running) ? "on" : "off"
-            print("always green: \(onOff) (interval \(state.intervalSeconds)s, app \(running ? "running" : "not running"))")
+            let access = state.accessibilityTrusted ? "granted" : "not granted"
+            print("always green: \(onOff) (interval \(state.intervalSeconds)s, app \(running ? "running" : "not running"), accessibility \(access))")
         } else {
             print("always green: \(running ? "running (state unknown)" : "not running")")
         }

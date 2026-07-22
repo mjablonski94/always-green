@@ -9,8 +9,6 @@ struct MenuContentView: View {
         Group {
             if showingInfo {
                 AboutView(onBack: { showingInfo = false })
-            } else if !engine.isAccessibilityTrusted {
-                onboarding
             } else {
                 mainControls
             }
@@ -43,6 +41,11 @@ struct MenuContentView: View {
             .controlSize(.large)
             .buttonStyle(.borderedProminent)
             .tint(engine.isRunning ? .red : .green)
+            .disabled(!engine.isAccessibilityTrusted)
+
+            if !engine.isAccessibilityTrusted {
+                accessibilityNotice
+            }
 
             Divider()
 
@@ -65,7 +68,7 @@ struct MenuContentView: View {
                 .font(.caption)
                 .foregroundStyle(.secondary)
 
-            Toggle("Launch at login", isOn: Binding(
+            Toggle("Launch at login (start with system)", isOn: Binding(
                 get: { engine.launchAtLogin },
                 set: { engine.setLaunchAtLogin($0) }
             ))
@@ -94,42 +97,24 @@ struct MenuContentView: View {
         }
     }
 
-    private var onboarding: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            header
-
-            VStack(alignment: .leading, spacing: 6) {
-                Label("One quick setup step", systemImage: "hand.raised.fill")
-                    .font(.callout).bold()
-                Text("Always Green needs Accessibility access to nudge the cursor. Turn on \"Always Green\" in the list, and it starts automatically - no restart needed.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            .padding(10)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.green.opacity(0.12), in: RoundedRectangle(cornerRadius: 8))
-
-            Button {
-                SystemActions.openAccessibilitySettings()
-            } label: {
-                Text("Open Accessibility Settings").frame(maxWidth: .infinity)
-            }
-            .controlSize(.large)
-            .buttonStyle(.borderedProminent)
-            .tint(.green)
-
+    private var accessibilityNotice: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Label("Accessibility access needed", systemImage: "hand.raised.fill")
+                .font(.callout).bold()
+                .foregroundStyle(.orange)
+            Text("Click Grant access, enable \"Always Green\" in the list that opens, then click Re-check. Start stays disabled until then.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
             HStack {
-                Button {
-                    showingInfo = true
-                } label: {
-                    Label("Info", systemImage: "info.circle")
-                }
-                .buttonStyle(.borderless)
-                Spacer()
-                Button("Quit") { NSApplication.shared.terminate(nil) }
-                    .buttonStyle(.borderless)
+                Button("Grant access") { engine.requestAccess() }
+                Button("Open Settings") { SystemActions.openAccessibilitySettings() }
+                Button("Re-check") { engine.refreshAccessibility() }
             }
+            .controlSize(.small)
         }
+        .padding(10)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.orange.opacity(0.12), in: RoundedRectangle(cornerRadius: 8))
     }
 }

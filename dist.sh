@@ -11,16 +11,25 @@ cd "$(dirname "$0")"
 
 APP="Always Green.app"
 ZIP="AlwaysGreen.zip"
+STAGE="dist"
 
 ./build.sh release
 
-codesign --force --options runtime --timestamp --sign "$DEVELOPER_ID" "$APP/Contents/MacOS/alwaysgreen"
-codesign --force --options runtime --timestamp --sign "$DEVELOPER_ID" "$APP/Contents/MacOS/AlwaysGreenApp"
+# Sign the app (signing the bundle signs its main executable) and the standalone CLI.
 codesign --force --options runtime --timestamp --sign "$DEVELOPER_ID" "$APP"
-codesign --verify --deep --strict --verbose=2 "$APP"
+codesign --force --options runtime --timestamp --sign "$DEVELOPER_ID" "alwaysgreen"
+codesign --verify --strict --verbose=2 "$APP"
 
-ditto -c -k --keepParent "$APP" "$ZIP"
-xcrun notarytool submit "$ZIP" --keychain-profile "$NOTARY_PROFILE" --wait
+# Notarize the app, then staple.
+ditto -c -k --keepParent "$APP" "notarize.zip"
+xcrun notarytool submit "notarize.zip" --keychain-profile "$NOTARY_PROFILE" --wait
 xcrun stapler staple "$APP"
+rm -f "notarize.zip"
 
-echo "Signed, notarized, stapled: $APP"
+# Release artifact for the Homebrew cask: stapled app + CLI at the archive root.
+rm -rf "$STAGE"; mkdir -p "$STAGE"
+cp -R "$APP" "$STAGE/"
+cp "alwaysgreen" "$STAGE/"
+ditto -c -k "$STAGE" "$ZIP"
+
+echo "Signed, notarized, stapled. Release artifact: $ZIP (app + alwaysgreen CLI)"

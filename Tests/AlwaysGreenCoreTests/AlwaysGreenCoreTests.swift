@@ -16,8 +16,10 @@ final class FakeDisplaySleep: DisplaySleepReading {
 
 final class FakeAccessibility: AccessibilityChecking {
     var trusted: Bool
+    private(set) var requestCount = 0
     init(_ trusted: Bool) { self.trusted = trusted }
     var isTrusted: Bool { trusted }
+    func requestAccess() { requestCount += 1 }
 }
 
 final class FakeLoginItem: LoginItemControlling {
@@ -157,6 +159,14 @@ final class JiggleEngineTests: XCTestCase {
         XCTAssertTrue(engine.isAccessibilityTrusted)
     }
 
+    func testRequestAccessAsksAndRefreshes() {
+        let (engine, _, _, _, accessibility, _) = makeEngine(trusted: false)
+        accessibility.trusted = true
+        engine.requestAccess()
+        XCTAssertEqual(accessibility.requestCount, 1)
+        XCTAssertTrue(engine.isAccessibilityTrusted)
+    }
+
     func testManualIntervalDisablesAuto() {
         let (engine, _, _, _, _, displaySleep) = makeEngine(displaySleep: 120)
         engine.setIntervalManually(45)
@@ -213,8 +223,8 @@ final class JiggleEngineTests: XCTestCase {
         let (engine, _, _, _, _, _) = makeEngine(displaySleep: 120, onState: { states.append($0) })
         engine.start()
         engine.stop()
-        XCTAssertEqual(states.first, AppState(running: true, intervalSeconds: 60))
-        XCTAssertEqual(states.last, AppState(running: false, intervalSeconds: 60))
+        XCTAssertEqual(states.first, AppState(running: true, intervalSeconds: 60, accessibilityTrusted: true))
+        XCTAssertEqual(states.last, AppState(running: false, intervalSeconds: 60, accessibilityTrusted: true))
     }
 
     func testIntervalLabel() {
@@ -275,7 +285,7 @@ final class AppStateTests: XCTestCase {
         let url = dir.appendingPathComponent("state.json")
         let store = AppStateStore(url: url)
         XCTAssertNil(store.load())
-        let state = AppState(running: true, intervalSeconds: 45)
+        let state = AppState(running: true, intervalSeconds: 45, accessibilityTrusted: true)
         try store.save(state)
         XCTAssertEqual(store.load(), state)
         try? FileManager.default.removeItem(at: dir)

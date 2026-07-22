@@ -49,6 +49,11 @@ final class PMSetDisplaySleepReader: DisplaySleepReading {
 
 final class AXAccessibilityChecker: AccessibilityChecking {
     var isTrusted: Bool { AXIsProcessTrusted() }
+
+    func requestAccess() {
+        let key = kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String
+        _ = AXIsProcessTrustedWithOptions([key: true] as CFDictionary)
+    }
 }
 
 final class SMLoginItem: LoginItemControlling {

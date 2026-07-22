@@ -101,7 +101,16 @@ public final class JiggleEngine: ObservableObject {
 
     public func refreshAccessibility() {
         let trusted = accessibility.isTrusted
-        if trusted != isAccessibilityTrusted { isAccessibilityTrusted = trusted }
+        if trusted != isAccessibilityTrusted {
+            isAccessibilityTrusted = trusted
+            publishState()
+        }
+    }
+
+    /// Ask macOS for Accessibility access, then refresh (user-initiated from the panel).
+    public func requestAccess() {
+        accessibility.requestAccess()
+        refreshAccessibility()
     }
 
     // MARK: - Login item
@@ -120,6 +129,10 @@ public final class JiggleEngine: ObservableObject {
     }
 
     private func publishState() {
-        onStateChange?(AppState(running: isRunning, intervalSeconds: intervalSeconds))
+        onStateChange?(AppState(
+            running: isRunning,
+            intervalSeconds: intervalSeconds,
+            accessibilityTrusted: isAccessibilityTrusted
+        ))
     }
 }

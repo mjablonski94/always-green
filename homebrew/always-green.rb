@@ -12,7 +12,7 @@ cask "always-green" do
   depends_on macos: ">= :sonoma"
 
   app "Always Green.app"
-  binary "#{appdir}/Always Green.app/Contents/MacOS/alwaysgreen"
+  binary "alwaysgreen"
 
   zap trash: [
     "~/Library/Application Support/Always Green"

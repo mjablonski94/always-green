@@ -68,8 +68,9 @@ Requires the Apple Developer Program ($99/yr; also makes the login item reliable
 
 ## Install via Homebrew
 
-The cask (`homebrew/always-green.rb`) installs `Always Green.app` and links the bundled
-`alwaysgreen` CLI onto your PATH. Once a signed release is published:
+The cask (`homebrew/always-green.rb`) installs `Always Green.app` and links the standalone
+`alwaysgreen` CLI (shipped alongside the app in the release zip) onto your PATH. Once a signed
+release is published:
 
 ```sh
 brew tap kofcio94/tap

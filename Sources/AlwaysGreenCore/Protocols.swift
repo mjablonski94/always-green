@@ -11,9 +11,12 @@ public protocol DisplaySleepReading: AnyObject {
     func displaySleepSeconds() -> Int?
 }
 
-/// Reports whether the process holds macOS Accessibility trust.
+/// Reports and requests macOS Accessibility trust.
 public protocol AccessibilityChecking: AnyObject {
     var isTrusted: Bool { get }
+    /// Ask macOS for Accessibility access (shows the standard prompt and lists the app in
+    /// Privacy & Security > Accessibility so the user can enable it).
+    func requestAccess()
 }
 
 /// Controls the launch-at-login registration. Backed by SMAppService in production.

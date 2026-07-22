@@ -29,7 +29,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         startTrustPolling()
         startIntervalPolling()
 
-        try? stateStore.save(AppState(running: engine.isRunning, intervalSeconds: engine.intervalSeconds))
+        try? stateStore.save(AppState(
+            running: engine.isRunning,
+            intervalSeconds: engine.intervalSeconds,
+            accessibilityTrusted: engine.isAccessibilityTrusted
+        ))
         engine.startIfTrusted()
     }
 
