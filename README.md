@@ -15,6 +15,7 @@ cursor movement on an interval derived from your screen-sleep setting. It ships 
 
 - [Features](#features)
 - [How it works](#how-it-works)
+- [Standalone Bash script](#standalone-bash-script)
 - [Install](#install)
 - [Permissions](#permissions)
 - [Usage](#usage)
@@ -56,6 +57,24 @@ The interval is chosen for you from the current power source's screen-sleep time
 `pmset`): `interval = clamp(screenSleep / 2, 15s, ...)`, and if screen-sleep is longer than five
 minutes or set to Never, it uses a safe 30-second default. See
 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the full data flow.
+
+## Standalone Bash script
+
+Copy `ops.sh` to your Mac and run it from its folder in Terminal. This single file
+works offline using the tools included with macOS. You can use it without installing or
+starting the menu-bar app.
+
+```bash
+bash ops.sh
+```
+
+The pointer moves eight screen points on startup and every 30 seconds. It returns after a
+quarter of a second if you leave the mouse still. Press **Ctrl+C** to stop.
+
+Bash runs the loop and briefly calls `/usr/bin/osascript` for each nudge. Its built-in
+JavaScript for Automation bridge posts the mouse movement through Core Graphics.
+If macOS denies access, enable your terminal under **System Settings > Privacy & Security >
+Accessibility**, then run the script again.
 
 ## Install
 
